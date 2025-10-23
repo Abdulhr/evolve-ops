@@ -1,0 +1,74 @@
+# Bash Configuration Example
+# Copy to your ~/.bashrc or append: cat example-bashrc >> ~/.bashrc
+
+# Welcome message
+echo "Welcome to Bash, $USER!"
+
+# Useful aliases
+alias ll='ls -lah'
+alias la='ls -A'
+alias l='ls -CF'
+alias ..='cd ..'
+alias ...='cd ../..'
+alias home='cd ~'
+
+# Git shortcuts
+alias gs='git status'
+alias ga='git add'
+alias gc='git commit -m'
+alias gp='git push'
+alias gl='git pull'
+alias glog='git log --oneline --graph --decorate'
+
+# Safety nets
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
+
+# Custom functions
+function mkcd() {
+    mkdir -p "$1" && cd "$1"
+}
+
+function extract() {
+    if [ -f "$1" ]; then
+        case "$1" in
+            *.tar.gz)  tar xzf "$1"    ;;
+            *.tar.bz2) tar xjf "$1"    ;;
+            *.zip)     unzip "$1"      ;;
+            *.gz)      gunzip "$1"     ;;
+            *)         echo "Unknown archive format" ;;
+        esac
+    else
+        echo "File not found: $1"
+    fi
+}
+
+function findfile() {
+    find . -name "$1" 2>/dev/null
+}
+
+function myip() {
+    curl -s https://api.ipify.org
+    echo
+}
+
+# Custom prompt (optional)
+PS1='\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+
+# History settings
+export HISTSIZE=10000
+export HISTFILESIZE=20000
+export HISTCONTROL=ignoredups:erasedups
+
+# Colored output
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
+
+# Load additional configs if they exist
+if [ -f ~/.bash_aliases ]; then
+    . ~/.bash_aliases
+fi
+
+echo "Custom aliases loaded: ll, gs, ga, gc, .., home, mkcd, extract"
