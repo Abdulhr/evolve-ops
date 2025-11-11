@@ -1,0 +1,84 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36" version="28.0.9">
+  <diagram name="Order Aggregate" id="orderAggregateDiagram">
+    <mxGraphModel dx="2157" dy="1676" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="aggBoundary" value="Order Aggregate" style="shape=swimlane;rounded=1;strokeColor=#000000;fillColor=#FFFFFF;" parent="1" vertex="1">
+          <mxGeometry x="-180" y="-110" width="1240" height="770" as="geometry">
+            <mxRectangle x="100" y="100" width="130" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="orderRoot" value="Order (Aggregate Root)&#xa;&#xa;UUID id&#xa;&#xa;        OrderNumber orderNumber&#xa;&#xa;        OrderStatus status&#xa;&#xa;        +Money totalAmount()&#xa;&#xa;        +placeOrder(Command)&#xa;&#xa;        +addItem(productId, quantity)&#xa;&#xa;        +removeItem(orderLineId)&#xa;&#xa;        +changeQuantity(orderLineId, quantity)&#xa;&#xa;        +calculateTotals()&#xa;&#xa;        +applyPayment(paymentInfo)&#xa;&#xa;        +ship(shipmentDetails)" style="shape=rectangle;rounded=1;fillColor=#dae8fc;strokeColor=#6c8ebf;verticalAlign=top;fontStyle=0" parent="aggBoundary" vertex="1">
+          <mxGeometry x="20" y="50" width="330" height="380" as="geometry" />
+        </mxCell>
+        <mxCell id="orderLine" value="OrderLine (Entity)&#xa;&#xa;UUID id&#xa;        ProductSnapshot product&#xa;        Quantity quantity&#xa;        +Money lineTotal()" style="shape=rectangle;rounded=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="aggBoundary" vertex="1">
+          <mxGeometry x="490" y="50" width="210" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="shipment" value="Shipment (Entity)&#xa;&#xa;UUID id&#xa;        Address toAddress&#xa;        ShipmentStatus status&#xa;        CarrierInfo carrier" style="shape=rectangle;rounded=1;fillColor=#fff2cc;strokeColor=#d6b656;verticalAlign=top;" parent="aggBoundary" vertex="1">
+          <mxGeometry x="494.5" y="420" width="220" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="address" value="Address (Value Object)" style="shape=rectangle;rounded=1;fillColor=#e1d5e7;strokeColor=#9673a6;" parent="aggBoundary" vertex="1">
+          <mxGeometry x="850" y="180" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="productSnapshot" value="ProductSnapshot (Value Object)" style="shape=rectangle;rounded=1;fillColor=#e1d5e7;strokeColor=#9673a6;" parent="aggBoundary" vertex="1">
+          <mxGeometry x="870" y="300" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="quantity" value="Quantity (Value Object)" style="shape=rectangle;rounded=1;fillColor=#e1d5e7;strokeColor=#9673a6;" parent="aggBoundary" vertex="1">
+          <mxGeometry x="870" y="450" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="c1" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;strokeColor=#000000;" parent="aggBoundary" source="orderRoot" target="orderLine" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c2" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;strokeColor=#000000;" parent="aggBoundary" source="orderRoot" target="payment" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c3" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;strokeColor=#000000;" parent="aggBoundary" source="orderRoot" target="shipment" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c4" style="edgeStyle=orthogonalEdgeStyle;dashed=1;endArrow=open;strokeColor=#9673a6;" parent="aggBoundary" source="orderLine" target="productSnapshot" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c5" style="edgeStyle=orthogonalEdgeStyle;dashed=1;endArrow=open;strokeColor=#9673a6;" parent="aggBoundary" source="orderNumber" target="quantity" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c6" style="edgeStyle=orthogonalEdgeStyle;dashed=1;endArrow=open;strokeColor=#9673a6;" parent="aggBoundary" source="payment" target="money" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="c7" style="edgeStyle=orthogonalEdgeStyle;dashed=1;endArrow=open;strokeColor=#9673a6;entryX=0.056;entryY=1;entryDx=0;entryDy=0;entryPerimeter=0;" parent="aggBoundary" target="address" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="714.5" y="485.5" as="sourcePoint" />
+            <mxPoint x="774.5" y="400" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4BPDJ2x_KQynmvISr-yI-1" value="" style="edgeStyle=orthogonalEdgeStyle;dashed=1;endArrow=open;strokeColor=#9673a6;" edge="1" parent="aggBoundary" source="shipment" target="payment">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="510" y="295" as="sourcePoint" />
+            <mxPoint x="670" y="210" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="payment" value="Payment (Entity)&#xa;&#xa;UUID id&#xa;        Money amount&#xa;        PaymentMethod method&#xa;        PaymentStatus status" style="shape=rectangle;rounded=1;fillColor=#fff2cc;strokeColor=#d6b656;verticalAlign=top;" parent="aggBoundary" vertex="1">
+          <mxGeometry x="499" y="200" width="211" height="151" as="geometry" />
+        </mxCell>
+        <mxCell id="4BPDJ2x_KQynmvISr-yI-2" value="" style="edgeStyle=orthogonalEdgeStyle;dashed=1;endArrow=open;strokeColor=#9673a6;" edge="1" parent="aggBoundary" source="money" target="orderNumber">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="550" y="5" as="sourcePoint" />
+            <mxPoint x="830" y="350" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="orderNumber" value="OrderNumber (Value Object)" style="shape=rectangle;rounded=1;fillColor=#e1d5e7;strokeColor=#9673a6;" parent="aggBoundary" vertex="1">
+          <mxGeometry x="870" y="380" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="4BPDJ2x_KQynmvISr-yI-3" value="" style="edgeStyle=orthogonalEdgeStyle;dashed=1;endArrow=open;strokeColor=#9673a6;" edge="1" parent="aggBoundary" source="orderLine" target="money">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="520" y="-5" as="sourcePoint" />
+            <mxPoint x="780" y="270" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="money" value="Money (Value Object)" style="shape=rectangle;rounded=1;fillColor=#e1d5e7;strokeColor=#9673a6;" parent="aggBoundary" vertex="1">
+          <mxGeometry x="860" y="90" width="180" height="40" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
